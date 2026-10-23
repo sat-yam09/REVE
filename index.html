@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#F6F1EA]">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RÊVE — Café & Roastery</title>
+
+  <!-- Google Fonts: Inter (Matching Noho Primary Display & Secondary Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lenis Smooth Scroll -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.css">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            reve: {
+              cream: '#F6F1EA',     // Clean oatmeal parchment
+              sand: '#ECE4D8',      // Soft muted linen
+              espresso: '#1A1816',  // Deep high-contrast charcoal roast (Noho inspired)
+              subtext: '#4A4642',   // Secondary editorial text
+              sepia: '#706B65',     // Soft muted meta label
+              line: 'rgba(26, 24, 22, 0.12)', // Subtle hairline
+            }
+          },
+          fontFamily: {
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP, ScrollTrigger & Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    /* Noho Typography System: Tight Display & Clean Body with Optical Spacing */
+    .font-display {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+    }
+    .font-display-heavy {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+    .font-body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      letter-spacing: -0.012em;
+      line-height: 1.65;
+    }
+
+    /* Slow, Luxurious Reveal Text Mask */
+    .reveal-mask {
+      overflow: hidden;
+      display: block;
+    }
+    .reveal-text {
+      display: block;
+      transform: translateY(110%);
+      opacity: 0;
+      will-change: transform, opacity;
+    }
+
+    /* Subtle SVG repeating pattern for consecutive sections (low opacity 0.04) */
+    .bg-pattern-subtle {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='%23342316' stroke-width='0.7' stroke-opacity='0.04'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+    }
+
+    /* Marquee animation */
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-track {
+      width: max-content;
+      animation: marquee-scroll 32s linear infinite;
+    }
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Codrops Grid-to-Preview active state: dims non-focused cards */
+    .grid-preview-active .product-card:not(.active-preview-card) {
+      opacity: 0.25;
+      transform: scale(0.98);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    ::selection {
+      background-color: #1A1816;
+      color: #F6F1EA;
+    }
+  </style>
+</head>
+
+<body class="bg-reve-cream text-reve-espresso font-sans font-normal antialiased selection:bg-reve-espresso selection:text-reve-cream">
+
+  <!-- ================= MINIMAL TOP BAR (MOBILE RESPONSIVE) ================= -->
+  <header class="w-full fixed top-0 left-0 z-40 bg-reve-cream/95 backdrop-blur-md border-b border-reve-line transition-all duration-300">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-8 md:px-16 h-16 sm:h-20 relative flex items-center justify-between text-xs tracking-[0.14em] uppercase text-reve-subtext font-medium">
+      
+      <!-- Left: Navigation Links -->
+      <nav class="flex items-center gap-4 sm:gap-8">
+        <a href="#menu" class="hover:text-reve-espresso transition-colors">Menu</a>
+        <a href="#space" class="hover:text-reve-espresso transition-colors hidden sm:inline">Space</a>
+      </nav>
+
+      <!-- Center: Clean Brand Mark -->
+      <a href="#" class="absolute left-1/2 -translate-x-1/2 font-display text-xl sm:text-3xl tracking-[-0.04em] text-reve-espresso hover:opacity-80 transition-opacity">
+        Rêve
+      </a>
+
+      <!-- Right: Action Links -->
+      <div class="flex items-center gap-4 sm:gap-8">
+        <a href="#about" class="hover:text-reve-espresso transition-colors hidden sm:inline">About</a>
+        <a href="#visit" class="text-reve-espresso border-b border-reve-espresso pb-0.5 hover:opacity-70 transition-opacity font-semibold">
+          Visit
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION (MOBILE RESPONSIVE) ================= -->
+  <section class="min-h-[85vh] pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 sm:px-8 md:px-16 max-w-[1400px] mx-auto flex flex-col justify-center">
+
+    <!-- Main Asymmetric Hero Stage -->
+    <div class="grid lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-20 items-center my-auto">
+      
+      <!-- Left: Typographic Composition with Slow Text Reveal -->
+      <div class="lg:col-span-7 space-y-6 sm:space-y-8">
+        
+        <p class="text-xs uppercase tracking-[0.2em] font-medium text-reve-sepia">
+          Maison de Café · Fondée à Paris
+        </p>
+
+        <!-- Noho-Inspired Tight Grotesque Headline -->
+        <h1 class="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[0.98] tracking-[-0.035em] text-reve-espresso">
+          The art of <br>
+          <span class="text-reve-subtext font-normal">the slow pour.</span>
+        </h1>
+
+        <!-- Reveal Text Animation in Description -->
+        <div class="space-y-1.5 max-w-lg pt-1 sm:pt-2">
+          <div class="reveal-mask">
+            <p class="reveal-text font-body text-base sm:text-lg text-reve-subtext">
+              Rêve is a quiet sanctuary dedicated to single-origin micro-lot coffees,
+            </p>
+          </div>
+          <div class="reveal-mask">
+            <p class="reveal-text font-body text-base sm:text-lg text-reve-subtext">
+              layered Normandy butter pastries, and the lost grace of stillness.
+            </p>
+          </div>
+          <div class="reveal-mask">
+            <p class="reveal-text font-body text-sm sm:text-base text-reve-sepia pt-2">
+              Every bean extracted with precision. Every morning treated as a pause.
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-2 sm:pt-4 flex items-center gap-6 sm:gap-8 text-xs tracking-[0.14em] uppercase font-semibold">
+          <a href="#menu" class="inline-flex items-center gap-2 text-reve-espresso border-b border-reve-espresso pb-1 hover:text-reve-subtext transition-colors">
+            <span>Explore Menu &rarr;</span>
+          </a>
+          <a href="#visit" class="text-reve-sepia hover:text-reve-espresso transition-colors">
+            14 Rue des Rêveries
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Right: Tall Offset Architectural Photo Frame -->
+      <div class="lg:col-span-5 flex justify-center lg:justify-end">
+        <div class="w-full max-w-sm sm:max-w-md space-y-2 sm:space-y-3">
+          <div class="aspect-[3/4] overflow-hidden bg-reve-sand shadow-sm">
+            <img 
+              src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=1200&q=85" 
+              alt="Rich espresso extraction and latte art" 
+              class="w-full h-full object-cover contrast-[1.08] saturate-[1.12] hover:scale-105 transition-transform duration-1000 ease-out hero-img"
+            />
+          </div>
+          <div class="flex justify-between items-center text-[10px] sm:text-[11px] uppercase tracking-wider text-reve-sepia font-medium">
+            <span>Artisanal Extraction</span>
+            <span>Single Origin · 08:30 AM</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ================= COFFEE MENU MARQUEE (BROWN COFFEE THEME) ================= -->
+  <div class="w-full bg-[#261E18] text-[#F6F1EA] py-3.5 sm:py-5 overflow-hidden border-y border-[#3E3228] select-none">
+    <div class="marquee-track flex gap-6 sm:gap-8 items-center whitespace-nowrap">
+      
+      <!-- Set 1 -->
+      <div class="marquee-content flex gap-6 sm:gap-8 items-center text-xs sm:text-sm tracking-[0.2em] uppercase font-medium">
+        <span>Single Origin Filter</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Velvet Cortado</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>18-Hour Cold Drip</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Cardamom Flat White</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Ethiopian Geisha</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Ceremonial Uji Matcha</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Citrus Espresso Tonic</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Smoked Sea Salt Mocha</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Nitro Cascara Brew</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Roasted Almond Latte</span>
+        <span class="text-[#C9A98B]">✦</span>
+      </div>
+
+      <!-- Set 2 -->
+      <div class="marquee-content flex gap-6 sm:gap-8 items-center text-xs sm:text-sm tracking-[0.2em] uppercase font-medium" aria-hidden="true">
+        <span>Single Origin Filter</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Velvet Cortado</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>18-Hour Cold Drip</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Cardamom Flat White</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Ethiopian Geisha</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Ceremonial Uji Matcha</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Citrus Espresso Tonic</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Smoked Sea Salt Mocha</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Nitro Cascara Brew</span>
+        <span class="text-[#C9A98B]">✦</span>
+        <span>Roasted Almond Latte</span>
+        <span class="text-[#C9A98B]">✦</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= SECTION 2: ABOUT / COFFEE CRAFT (BAUHAUS GEOMETRIC MOSAIC) ================= -->
+  <section id="about" class="py-20 md:py-36 px-4 sm:px-8 md:px-16 border-t border-reve-line bg-[#FAF5EC]">
+    <div class="max-w-[1400px] mx-auto">
+      
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        
+        <!-- Left: Editorial Text Column with Slow Reveal Animation -->
+        <div class="lg:col-span-5 space-y-6 sm:space-y-8">
+          
+          <div class="space-y-2">
+            <span class="text-xs tracking-[0.2em] uppercase text-reve-sepia block font-medium">About Rêve</span>
+            <h2 class="font-display-heavy text-5xl sm:text-7xl lg:text-8xl tracking-[-0.04em] text-[#1B2238] uppercase leading-none">
+              Coffee
+            </h2>
+          </div>
+
+          <!-- Slow Reveal Text Masked Paragraphs -->
+          <div class="space-y-4 max-w-md">
+            <div class="reveal-mask">
+              <p class="reveal-text font-body text-sm sm:text-base text-reve-subtext">
+                We believe coffee is an intentional craft. From high-altitude volcanic soils in Sidama and Huila to the deliberate alchemy of slow drum roasting, every cup honors the rhythm of the harvest and the hand that picked it.
+              </p>
+            </div>
+            <div class="reveal-mask">
+              <p class="reveal-text font-body text-sm sm:text-base text-reve-subtext">
+                At Rêve, we bridge traditional European cafe culture with modern single-origin precision. No shortcuts, no artificial velocity—just honest beans, pure spring water, and the quiet pleasure of unhurried extraction.
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom decorative loop line -->
+          <div class="pt-2 flex items-center gap-4">
+            <div class="w-14 sm:w-16 h-8 rounded-full border-2 border-[#1B2238] border-r-0"></div>
+            <div class="h-[2px] bg-[#1B2238] flex-grow max-w-[120px]"></div>
+            <span class="text-xs uppercase tracking-wider text-[#1B2238] font-semibold">Single Origin · Paris</span>
+          </div>
+
+        </div>
+
+        <!-- Right: Bauhaus Geometric Coffee Mosaic Grid (Responsive on Mobile) -->
+        <div class="lg:col-span-7 flex justify-center lg:justify-end">
+          <div class="w-full max-w-[560px] grid grid-cols-4 gap-1.5 sm:gap-2.5 p-2 sm:p-3 bg-[#F3ECDD] rounded-xl sm:rounded-2xl border border-reve-line shadow-sm">
+            
+            <!-- ROW 1, COL 1: Navy quarter-circle with Coffee Branch -->
+            <div class="aspect-square bg-[#1B2238] rounded-tr-[36px] sm:rounded-tr-[56px] p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#6B85BD] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 65 Q 40 45, 65 20" />
+                <circle cx="28" cy="42" r="5" />
+                <circle cx="42" cy="30" r="5" />
+                <circle cx="56" cy="18" r="5" />
+                <path d="M28 37 C 22 25, 34 22, 36 28" />
+                <path d="M42 25 C 38 14, 50 12, 51 18" />
+                <path d="M25 55 C 16 52, 18 42, 26 47" />
+              </svg>
+            </div>
+
+            <!-- ROW 1, COL 2: Periwinkle blue with Pour Over V60 -->
+            <div class="aspect-square bg-[#6B85BD] rounded-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#1B2238] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="20,18 60,18 48,38 32,38" />
+                <path d="M34,38 L46,38 L54,65 L26,65 Z" />
+                <path d="M54,44 C 64,48 64,58 52,60" />
+                <line x1="28" y1="18" x2="52" y2="18" />
+              </svg>
+            </div>
+
+            <!-- ROW 1, COL 3: Navy with Concentric Arches -->
+            <div class="aspect-square bg-[#1B2238] rounded-lg p-2 sm:p-2.5 flex items-center justify-center overflow-hidden group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#F2B743] fill-none" stroke-width="2.5" stroke-linecap="round">
+                <path d="M80 20 A 40 40 0 0 0 20 80" />
+                <path d="M80 34 A 26 26 0 0 0 34 80" />
+                <path d="M80 48 A 12 12 0 0 0 48 80" />
+              </svg>
+            </div>
+
+            <!-- ROW 1, COL 4: Cream Accent Tile with Corner Arc -->
+            <div class="aspect-square bg-[#FAF5EC] rounded-lg p-2 sm:p-2.5 flex items-center justify-center overflow-hidden border border-reve-line/60">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#DE5844] fill-none" stroke-width="2.2" stroke-linecap="round">
+                <path d="M0 20 Q 40 20, 40 80" />
+                <circle cx="20" cy="40" r="3" fill="#DE5844" />
+              </svg>
+            </div>
+
+            <!-- ROW 2, COL 1: Mustard Yellow Arch with Coffee Beans -->
+            <div class="aspect-square bg-[#F2B743] rounded-t-[36px] sm:rounded-t-[56px] rounded-b-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#DE5844] fill-none" stroke-width="2.2" stroke-linecap="round">
+                <g transform="translate(18, 16) rotate(-20)">
+                  <ellipse cx="14" cy="20" rx="12" ry="16" />
+                  <path d="M14 6 C 18 14, 10 26, 14 34" />
+                </g>
+                <g transform="translate(42, 38) rotate(25)">
+                  <ellipse cx="10" cy="14" rx="9" ry="13" />
+                  <path d="M10 3 C 13 9, 7 19, 10 25" />
+                </g>
+              </svg>
+            </div>
+
+            <!-- ROW 2, COL 2: Coral Red with Takeaway Cup -->
+            <div class="aspect-square bg-[#DE5844] rounded-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#1B2238] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="24" y="18" width="32" height="6" rx="2" />
+                <line x1="30" y1="18" x2="30" y2="14" />
+                <line x1="50" y1="18" x2="50" y2="14" />
+                <path d="M26,24 L30,66 L50,66 L54,24 Z" />
+                <path d="M28,36 L52,36 L50,52 L30,52 Z" />
+                <ellipse cx="40" cy="44" rx="4" ry="5" />
+                <path d="M40,40 C 42,43 38,45 40,48" />
+              </svg>
+            </div>
+
+            <!-- ROW 2, COL 3: Cream with Racetrack Curves -->
+            <div class="aspect-square bg-[#FAF5EC] rounded-lg p-2 sm:p-2.5 flex items-center justify-center overflow-hidden border border-reve-line/60">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#F2B743] fill-none" stroke-width="2.5" stroke-linecap="round">
+                <path d="M0 40 H 40 A 20 20 0 0 1 40 80 H 0" />
+                <path d="M0 26 H 40 A 34 34 0 0 1 40 94" />
+              </svg>
+            </div>
+
+            <!-- ROW 2, COL 4: Mustard Yellow Vertical Arch with Moka Pot -->
+            <div class="aspect-square bg-[#F2B743] rounded-t-[36px] sm:rounded-t-[56px] rounded-b-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#DE5844] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="40" cy="16" r="3" />
+                <path d="M30 22 L40 18 L50 22 Z" />
+                <path d="M26 22 L32 40 L48 40 L54 22 Z" />
+                <line x1="32" y1="40" x2="48" y2="40" />
+                <path d="M30 40 L26 62 L54 62 L50 40 Z" />
+                <path d="M52 26 C 62 30, 62 48, 50 50" />
+                <path d="M26 24 L20 28 L28 32" />
+              </svg>
+            </div>
+
+            <!-- ROW 3, COL 1: Periwinkle Blue with Latte Art Cup -->
+            <div class="aspect-square bg-[#6B85BD] rounded-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#1B2238] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <ellipse cx="38" cy="48" rx="28" ry="12" />
+                <circle cx="38" cy="44" r="18" />
+                <path d="M56 42 C 64 42, 64 50, 56 50" />
+                <path d="M38 48 C 34 43, 30 40, 34 36 C 37 33, 38 37, 38 38 C 38 37, 39 33, 42 36 C 46 40, 42 43, 38 48 Z" fill="#1B2238" />
+              </svg>
+            </div>
+
+            <!-- ROW 3, COL 2: Cream with Connecting Curves -->
+            <div class="aspect-square bg-[#FAF5EC] rounded-lg p-2 sm:p-2.5 flex items-center justify-center overflow-hidden border border-reve-line/60">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#DE5844] fill-none" stroke-width="2.2" stroke-linecap="round">
+                <path d="M40 0 V 40 A 20 20 0 0 0 80 40" />
+                <path d="M26 0 V 40 A 34 34 0 0 0 80 54" />
+              </svg>
+            </div>
+
+            <!-- ROW 3, COL 3: Deep Navy with Vintage Coffee Grinder -->
+            <div class="aspect-square bg-[#1B2238] rounded-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#6B85BD] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="24" y="38" width="32" height="26" rx="3" />
+                <circle cx="40" cy="51" r="2.5" />
+                <path d="M28 38 C 28 28, 52 28, 52 38 Z" />
+                <line x1="40" y1="28" x2="40" y2="18" />
+                <path d="M40 18 L56 16 L56 22" />
+                <circle cx="56" cy="22" r="2" fill="#6B85BD" />
+              </svg>
+            </div>
+
+            <!-- ROW 3, COL 4: Coral Red Arch with Coffee Bean Pouch -->
+            <div class="aspect-square bg-[#DE5844] rounded-t-[36px] sm:rounded-t-[56px] rounded-b-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#1B2238] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M26 30 L32 20 L48 20 L54 30 L52 64 L28 64 Z" />
+                <line x1="26" y1="30" x2="54" y2="30" />
+                <rect x="30" y="16" width="20" height="4" rx="1" />
+                <ellipse cx="40" cy="46" rx="5" ry="7" />
+                <path d="M40 40 C 42 44, 38 48, 40 52" />
+              </svg>
+            </div>
+
+            <!-- ROW 4, COL 1: Cream with Bottom Hairpin Loop -->
+            <div class="aspect-square bg-[#FAF5EC] rounded-lg p-2 sm:p-2.5 flex items-center justify-center overflow-hidden border border-reve-line/60">
+              <div class="w-12 sm:w-14 h-6 sm:h-8 rounded-full border-2 border-[#1B2238] border-r-0"></div>
+            </div>
+
+            <!-- ROW 4, COL 2 & 3: Double-Wide Mustard Block with Espresso Machine -->
+            <div class="col-span-2 aspect-[2/1] bg-[#F2B743] rounded-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.02] transition-transform">
+              <svg viewBox="0 0 160 80" class="w-full h-full stroke-[#DE5844] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="20" y="16" width="120" height="52" rx="4" />
+                <line x1="28" y1="12" x2="132" y2="12" />
+                <line x1="28" y1="12" x2="28" y2="16" />
+                <line x1="132" y1="12" x2="132" y2="16" />
+                <circle cx="50" cy="28" r="5" />
+                <circle cx="65" cy="28" r="5" />
+                <circle cx="80" cy="28" r="5" />
+                <rect x="94" y="32" width="16" height="6" rx="1" />
+                <path d="M96 38 L94 46 L108 46 L106 38" />
+                <line x1="108" y1="42" x2="124" y2="44" stroke-width="3" />
+                <path d="M96 52 C 96 60, 106 60, 106 52 Z" />
+                <line x1="28" y1="62" x2="132" y2="62" stroke-dasharray="4 3" />
+              </svg>
+            </div>
+
+            <!-- ROW 4, COL 4: Periwinkle with Single Origin Bag -->
+            <div class="aspect-square bg-[#6B85BD] rounded-lg p-2 sm:p-3 flex items-center justify-center group hover:scale-[1.03] transition-transform">
+              <svg viewBox="0 0 80 80" class="w-full h-full stroke-[#1B2238] fill-none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M26 26 L30 18 L50 18 L54 26 L52 64 L28 64 Z" />
+                <line x1="26" y1="26" x2="54" y2="26" />
+                <circle cx="40" cy="45" r="7" />
+                <path d="M40 39 C 42 43, 38 47, 40 51" />
+              </svg>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 3: MENU WITH BORDERLESS CARDS & RELIABLE FULL PREVIEW ================= -->
+  <section id="menu" class="py-20 md:py-40 px-4 sm:px-8 md:px-16 border-t border-reve-line bg-reve-sand/30 relative">
+    <div class="max-w-[1400px] mx-auto space-y-12 sm:space-y-16">
+      
+      <!-- Section Title & Narrative with Reveal Text -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 sm:pb-8 border-b border-reve-line">
+        <div class="space-y-2 sm:space-y-3">
+          <span class="text-xs tracking-[0.2em] uppercase text-reve-sepia block font-medium">Selected Repertoire</span>
+          <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl tracking-[-0.035em] text-reve-espresso">
+            Seasonal Menu
+          </h2>
+        </div>
+        <div class="space-y-1 text-left md:text-right">
+          <p class="text-xs uppercase tracking-[0.16em] text-reve-subtext font-semibold">
+            Interactive Tasting Catalog
+          </p>
+          <p class="text-xs text-reve-sepia font-normal">
+            Click any item to expand live flavor extraction details
+          </p>
+        </div>
+      </div>
+
+      <!-- CODROPS GRID-TO-PREVIEW: BORDERLESS PRODUCT CARDS -->
+      <div id="productGridContainer" class="relative">
+        
+        <!-- Interactive 8-Item Product Grid (Zero Borders, Clean Editorial) -->
+        <div id="menuProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 sm:gap-x-8 sm:gap-y-12 transition-opacity duration-300">
+          
+          <!-- Product Card 1 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="1"
+               data-title="Single Origin Filter"
+               data-category="Filter & Pour-Over"
+               data-price="$5.50"
+               data-origin="Sidama, Ethiopia · 1,950m"
+               data-process="Washed Heirloom"
+               data-notes="Jasmine blossoms, ripe yellow peach, honey water, and crisp bergamot finish."
+               data-recipe="93°C · 1:16 Ratio · 3:15 Brew Time"
+               data-image="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=85" alt="Single Origin Filter" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">Single Origin Filter</h4>
+                <span class="font-display text-sm text-reve-subtext">$5.50</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">Yirgacheffe micro-lot · Floral & Stone fruit</p>
+            </div>
+          </div>
+
+          <!-- Product Card 2 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="2"
+               data-title="Velvet Cortado"
+               data-category="Espresso & Milk"
+               data-price="$5.00"
+               data-origin="Huila, Colombia · 1,800m"
+               data-process="Honey Processed Caturra"
+               data-notes="Rich roasted hazelnut, 70% dark cacao, velvety whole milk with dense microfoam."
+               data-recipe="1:1 Ratio · Double Ristretto · 60°C Milk"
+               data-image="https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=800&q=85" alt="Velvet Cortado" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">Velvet Cortado</h4>
+                <span class="font-display text-sm text-reve-subtext">$5.00</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">Equal parts espresso & textured milk</p>
+            </div>
+          </div>
+
+          <!-- Product Card 3 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="3"
+               data-title="18-Hour Cold Drip"
+               data-category="Slow Iced Extraction"
+               data-price="$6.50"
+               data-origin="Antioquia, Colombia · 1,900m"
+               data-process="Slow Ice Tower Infusion"
+               data-notes="Deep bourbon barrel sweetness, dark chocolate nibs, dried fig, and sweet citrus zest."
+               data-recipe="1 Drop per Second · 18 Hours Aged"
+               data-image="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=800&q=85" alt="18-Hour Cold Drip" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">18-Hour Cold Drip</h4>
+                <span class="font-display text-sm text-reve-subtext">$6.50</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">Oak aged notes · Dark cacao & citrus</p>
+            </div>
+          </div>
+
+          <!-- Product Card 4 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="4"
+               data-title="Ceremonial Uji Matcha"
+               data-category="Stone-Ground Tea"
+               data-price="$6.50"
+               data-origin="Kyoto, Japan · Single Estate"
+               data-process="First Harvest Shade-Grown"
+               data-notes="Intense umami sweetness, vibrant emerald body, whisked with warm oat milk."
+               data-recipe="Bamboo Chasen Whisk · 80°C Water"
+               data-image="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=85" alt="Ceremonial Uji Matcha" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">Uji Matcha Latte</h4>
+                <span class="font-display text-sm text-reve-subtext">$6.50</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">First harvest Kyoto matcha & oat milk</p>
+            </div>
+          </div>
+
+          <!-- Product Card 5 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="5"
+               data-title="Cardamom Kouign-Amann"
+               data-category="Viennoiserie"
+               data-price="$5.50"
+               data-origin="Normandy Butter · House Ferment"
+               data-process="27 Micro-Folded Layers"
+               data-notes="Caramelized crust, tender buttery honeycomb interior, and fragrant cracked cardamom."
+               data-recipe="Baked Twice Daily at 08:00 & 13:00"
+               data-image="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=85" alt="Cardamom Kouign-Amann" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">Kouign-Amann</h4>
+                <span class="font-display text-sm text-reve-subtext">$5.50</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">Caramelized folds & green cardamom</p>
+            </div>
+          </div>
+
+          <!-- Product Card 6 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="6"
+               data-title="Almond Croissant"
+               data-category="Viennoiserie"
+               data-price="$6.00"
+               data-origin="Cultured Butter · Spanish Almonds"
+               data-process="Double Baked with Frangipane"
+               data-notes="Crisp toasted almond flakes, subtle orange blossom syrup, and almond pastry cream."
+               data-recipe="72-Hour Fermented Dough"
+               data-image="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=85" alt="Almond Croissant" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">Almond Croissant</h4>
+                <span class="font-display text-sm text-reve-subtext">$6.00</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">Double baked · Orange blossom syrup</p>
+            </div>
+          </div>
+
+          <!-- Product Card 7 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="7"
+               data-title="Wild Mushroom Brioche"
+               data-category="Savory Kitchen"
+               data-price="$12.00"
+               data-origin="Chanterelles & Thyme Ricotta"
+               data-process="House-Made Brioche Toast"
+               data-notes="Pan-roasted chanterelles, soft fresh herb ricotta, coarse pepper, and lemon zest."
+               data-recipe="Prepared Fresh to Order"
+               data-image="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=85" alt="Wild Mushroom Brioche" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">Mushroom Brioche</h4>
+                <span class="font-display text-sm text-reve-subtext">$12.00</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">Sautéed chanterelles on thick brioche</p>
+            </div>
+          </div>
+
+          <!-- Product Card 8 -->
+          <div class="product-card group cursor-pointer space-y-3"
+               data-id="8"
+               data-title="Pistachio Pain au Chocolat"
+               data-category="Viennoiserie"
+               data-price="$6.25"
+               data-origin="Valrhona & Bronte Pistachio"
+               data-process="Laminated Butter Dough"
+               data-notes="Double batons of 70% dark chocolate with house-ground roasted pistachio praline."
+               data-recipe="Baked Fresh Daily"
+               data-image="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=1200&q=85">
+            <div class="aspect-[4/5] overflow-hidden bg-reve-sand relative">
+              <img src="https://images.unsplash.com/photo-1608198093002-ad4e005484ec?auto=format&fit=crop&w=800&q=85" alt="Pistachio Pain au Chocolat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+              <span class="absolute bottom-3 right-3 bg-reve-espresso/90 text-white text-[10px] tracking-wider uppercase px-2.5 py-1 font-medium opacity-0 group-hover:opacity-100 transition-opacity hidden sm:inline-block">
+                Preview &rarr;
+              </span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between items-baseline">
+                <h4 class="font-display text-base sm:text-lg text-reve-espresso">Pistachio Chocolat</h4>
+                <span class="font-display text-sm text-reve-subtext">$6.25</span>
+              </div>
+              <p class="font-body text-xs text-reve-sepia">Valrhona chocolate & pistachio praline</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= CODROPS FULLSCREEN PREVIEW OVERLAY (ROBUST & RESPONSIVE) ================= -->
+  <div id="productPreviewModal" class="hidden fixed inset-0 z-50 bg-[#F6F1EA] overflow-y-auto flex flex-col justify-between p-6 sm:p-10 md:p-16">
+    
+    <!-- Top Control Bar -->
+    <div class="max-w-[1400px] w-full mx-auto flex items-center justify-between pb-6 border-b border-reve-line">
+      <div class="flex items-center gap-3">
+        <span id="previewBadge" class="text-xs uppercase tracking-[0.16em] px-3 py-1 rounded-full bg-reve-sand text-reve-espresso font-semibold">
+          Filter & Pour-Over
+        </span>
+        <span class="text-xs text-reve-sepia hidden sm:inline">Extraction Blueprint</span>
+      </div>
+      <button id="closePreviewBtn" class="flex items-center gap-2 text-xs uppercase tracking-[0.16em] font-semibold text-reve-espresso hover:text-reve-subtext transition-colors px-4 py-2 border border-reve-line rounded hover:bg-reve-sand/50 active:scale-95">
+        <span>Close</span>
+        <span>✕</span>
+      </button>
+    </div>
+
+    <!-- Preview Content Stage: Responsive Split -->
+    <div class="max-w-[1400px] w-full mx-auto grid lg:grid-cols-12 gap-8 lg:gap-14 items-center my-auto py-8">
+      
+      <!-- Left: Full Hero Image Frame -->
+      <div class="lg:col-span-6">
+        <div class="aspect-[4/3] sm:aspect-[16/11] overflow-hidden bg-reve-sand shadow-sm">
+          <img id="previewImage" src="" alt="Product Preview" class="w-full h-full object-cover transition-transform duration-1000 ease-out" />
+        </div>
+      </div>
+
+      <!-- Right: Detailed Specifications -->
+      <div class="lg:col-span-6 space-y-6">
+        
+        <div class="space-y-2">
+          <h3 id="previewTitle" class="font-display text-3xl sm:text-4xl lg:text-5xl tracking-[-0.035em] text-reve-espresso leading-tight">
+            Single Origin Filter
+          </h3>
+          <p id="previewPrice" class="font-display text-2xl text-reve-subtext">
+            $5.50
+          </p>
+        </div>
+
+        <!-- Tasting Notes Profile -->
+        <div class="p-4 sm:p-5 bg-white/80 border border-reve-line rounded space-y-1.5">
+          <span class="text-[11px] uppercase tracking-[0.16em] text-reve-sepia font-semibold block">Tasting Notes Profile</span>
+          <p id="previewNotes" class="font-body text-sm sm:text-base text-reve-subtext">
+            Jasmine blossoms, ripe yellow peach, honey water, and crisp bergamot finish.
+          </p>
+        </div>
+
+        <!-- Spec Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-y border-reve-line py-4">
+          <div>
+            <span class="text-reve-sepia uppercase tracking-wider block text-[10px] font-medium">Origin & Elevation</span>
+            <span id="previewOrigin" class="font-medium text-reve-espresso mt-0.5 block">Sidama, Ethiopia · 1,950m</span>
+          </div>
+          <div>
+            <span class="text-reve-sepia uppercase tracking-wider block text-[10px] font-medium">Brew Blueprint</span>
+            <span id="previewRecipe" class="font-medium text-reve-espresso mt-0.5 block">93°C · 1:16 Ratio · 3:15 Time</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-wrap items-center gap-4 pt-2">
+          <button onclick="alert('Item added to tasting order');" class="bg-reve-espresso hover:bg-black text-white text-xs uppercase tracking-[0.16em] font-semibold px-6 py-3.5 rounded transition shadow-sm active:scale-95">
+            Order to Counter
+          </button>
+          <button id="nextProductBtn" class="text-xs uppercase tracking-[0.14em] text-reve-subtext hover:text-reve-espresso font-semibold transition py-3.5 px-5 border border-reve-line rounded hover:bg-reve-sand/40 active:scale-95">
+            Next Item &rarr;
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Footer Note -->
+    <div class="max-w-[1400px] w-full mx-auto pt-6 border-t border-reve-line flex flex-col sm:flex-row items-center justify-between text-[11px] text-reve-sepia font-medium gap-2">
+      <span>Press ESC or click close to return to catalog</span>
+      <span>Rêve Coffee Roastery · Paris</span>
+    </div>
+
+  </div>
+
+  <!-- ================= SECTION 4: THE SPACE (ASYMMETRIC PHOTO ESSAY) ================= -->
+  <section id="space" class="py-20 md:py-40 px-4 sm:px-8 md:px-16 border-t border-reve-line bg-pattern-subtle">
+    <div class="max-w-[1400px] mx-auto space-y-12 sm:space-y-16">
+      
+      <div class="max-w-2xl space-y-4">
+        <span class="text-xs tracking-[0.2em] uppercase text-reve-sepia block font-medium">The Architecture</span>
+        <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl tracking-[-0.035em] text-reve-espresso">
+          Natural light, honest wood, and quiet corners.
+        </h2>
+        <div class="reveal-mask pt-2">
+          <p class="reveal-text font-body text-sm sm:text-base text-reve-subtext">
+            Designed around acoustic calm and tactile surfaces. Travertine counters, raw oak stools, and soft 2700K ambient illumination.
+          </p>
+        </div>
+      </div>
+
+      <!-- Asymmetric Editorial Gallery -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-end">
+        
+        <div class="md:col-span-7 space-y-3">
+          <div class="aspect-[16/10] overflow-hidden bg-reve-sand">
+            <img 
+              src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1400&q=85" 
+              alt="Sunlit cafe interior with linen curtains" 
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
+            />
+          </div>
+          <p class="text-[11px] tracking-wider uppercase text-reve-sepia font-medium">The Sunlit Ground Lounge</p>
+        </div>
+
+        <div class="md:col-span-5 space-y-3">
+          <div class="aspect-[4/5] overflow-hidden bg-reve-sand">
+            <img 
+              src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1000&q=85" 
+              alt="Window nook table" 
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
+            />
+          </div>
+          <p class="text-[11px] tracking-wider uppercase text-reve-sepia font-medium">The Reading Nook</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION 5: VISIT & LOCATION ================= -->
+  <section id="visit" class="py-20 md:py-36 px-4 sm:px-8 md:px-16 border-t border-reve-line">
+    <div class="max-w-[1400px] mx-auto">
+      
+      <div class="grid lg:grid-cols-12 gap-10 lg:gap-24">
+        
+        <div class="lg:col-span-5 space-y-6">
+          <span class="text-xs tracking-[0.2em] uppercase text-reve-sepia block font-medium">Location & Hours</span>
+          <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl tracking-[-0.035em] text-reve-espresso">
+            Join us in the morning.
+          </h2>
+          <div class="reveal-mask">
+            <p class="reveal-text font-body text-sm sm:text-base text-reve-subtext max-w-sm">
+              Located on Rue des Rêveries. Seating is entirely walk-in for morning coffee, light conversation, and quiet work.
+            </p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 grid sm:grid-cols-2 gap-8 sm:gap-12">
+          
+          <div class="space-y-4">
+            <h4 class="text-xs uppercase tracking-[0.18em] text-reve-espresso font-semibold border-b border-reve-line pb-2">
+              Hours of Service
+            </h4>
+            <div class="text-xs space-y-2 text-reve-subtext font-normal leading-relaxed">
+              <p><span class="text-reve-espresso font-semibold">Monday &mdash; Friday:</span> 07:30 — 18:00</p>
+              <p><span class="text-reve-espresso font-semibold">Saturday & Sunday:</span> 08:30 — 18:30</p>
+              <p class="pt-2 text-[11px] text-reve-sepia">Bake schedules: 08:00 and 13:00</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <h4 class="text-xs uppercase tracking-[0.18em] text-reve-espresso font-semibold border-b border-reve-line pb-2">
+              Contact & Inquiries
+            </h4>
+            <div class="text-xs space-y-2 text-reve-subtext font-normal leading-relaxed">
+              <p class="font-semibold text-reve-espresso">14 Rue des Rêveries, Paris</p>
+              <p>bonjour@reve-cafe.com</p>
+              <p>+33 1 42 68 55 00</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= FOOTER: BLACK, MINIMAL & LUXURIOUS ================= -->
+  <footer class="py-16 md:py-24 px-4 sm:px-8 md:px-16 bg-[#0A0A0A] text-[#E8DFD4] border-t border-white/10">
+    <div class="max-w-[1400px] mx-auto space-y-16">
+      
+      <!-- Top Row -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-10 pb-12 sm:pb-16 border-b border-white/10">
+        
+        <div class="space-y-4">
+          <span class="font-display text-3xl sm:text-5xl font-bold tracking-[-0.04em] text-white block">
+            Rêve
+          </span>
+          <p class="text-xs text-[#9E9082] max-w-sm leading-relaxed font-body">
+            Specialty coffee roastery & French viennoiserie. Serving slow mornings and single-origin extractions.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-6 sm:gap-10 text-xs tracking-[0.16em] uppercase text-white font-medium">
+          <a href="#menu" class="hover:text-[#D1C3B2] transition-colors">Menu</a>
+          <a href="#space" class="hover:text-[#D1C3B2] transition-colors">Space</a>
+          <a href="#visit" class="hover:text-[#D1C3B2] transition-colors">Hours</a>
+          <a href="#" class="hover:text-[#D1C3B2] transition-colors">Instagram</a>
+        </div>
+
+      </div>
+
+      <!-- Bottom Row -->
+      <div class="flex flex-col sm:flex-row items-center justify-between text-xs tracking-wider text-[#6E6357] gap-4">
+        <p>&copy; 2026 RÊVE Café & Roastery. Paris, France.</p>
+        <div class="flex gap-6 sm:gap-8">
+          <a href="#" class="hover:text-[#9E9082] transition-colors">Privacy</a>
+          <a href="#" class="hover:text-[#9E9082] transition-colors">Accessibility</a>
+          <span>14 Rue des Rêveries</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS: LENIS, GSAP REVEALS & CODROPS GRID-TO-PREVIEW ================= -->
+  <script>
+    // 1. Initialize Lenis smooth scroll
+    const lenis = new Lenis({
+      duration: 1.25,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      wheelMultiplier: 1.1,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    lenis.on('scroll', ScrollTrigger.update);
+
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
+
+    // Smooth anchor navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          const target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            lenis.scrollTo(target, { offset: -80 });
+          }
+        }
+      });
+    });
+
+    // 2. Slow, Unhurried GSAP Reveal Text Animation in Descriptions
+    window.addEventListener('DOMContentLoaded', () => {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero Title reveal
+      gsap.from('h1', {
+        opacity: 0,
+        y: 35,
+        duration: 1.6,
+        ease: 'power3.out'
+      });
+
+      // Description lines: slow, deliberate slide up from masked baseline (1.8s duration)
+      document.querySelectorAll('.reveal-text').forEach((text) => {
+        gsap.to(text, {
+          y: '0%',
+          opacity: 1,
+          duration: 1.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: text,
+            start: 'top 88%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+    });
+
+    // 3. Robust Codrops Grid-to-Preview Interactive Animation
+    const productCards = document.querySelectorAll('.product-card');
+    const previewModal = document.getElementById('productPreviewModal');
+    const closePreviewBtn = document.getElementById('closePreviewBtn');
+    const nextProductBtn = document.getElementById('nextProductBtn');
+    const gridContainer = document.getElementById('productGridContainer');
+    let currentProductIndex = 0;
+
+    function openProductPreview(card) {
+      currentProductIndex = Array.from(productCards).indexOf(card);
+      
+      const title = card.dataset.title;
+      const category = card.dataset.category;
+      const price = card.dataset.price;
+      const origin = card.dataset.origin;
+      const notes = card.dataset.notes;
+      const recipe = card.dataset.recipe;
+      const image = card.dataset.image;
+
+      // Populate preview details
+      document.getElementById('previewTitle').textContent = title;
+      document.getElementById('previewBadge').textContent = category;
+      document.getElementById('previewPrice').textContent = price;
+      document.getElementById('previewOrigin').textContent = origin;
+      document.getElementById('previewNotes').textContent = notes;
+      document.getElementById('previewRecipe').textContent = recipe;
+      
+      const previewImgEl = document.getElementById('previewImage');
+      previewImgEl.src = image;
+
+      // Dim non-active cards in background grid
+      productCards.forEach(c => c.classList.remove('active-preview-card'));
+      card.classList.add('active-preview-card');
+      gridContainer.classList.add('grid-preview-active');
+
+      // Stop page scrolling while preview is open
+      lenis.stop();
+
+      // Show modal
+      previewModal.classList.remove('hidden');
+
+      // GSAP Clip-path morph expansion (Codrops transition)
+      gsap.killTweensOf(previewModal);
+      gsap.fromTo(previewModal, 
+        { 
+          clipPath: 'inset(12% 12% 12% 12%)',
+          opacity: 0,
+          scale: 0.97
+        },
+        { 
+          clipPath: 'inset(0% 0% 0% 0%)',
+          opacity: 1,
+          scale: 1,
+          duration: 0.65,
+          ease: 'power3.out'
+        }
+      );
+
+      // Staggered reveal of details inside preview
+      gsap.fromTo(['#previewBadge', '#previewTitle', '#previewPrice', '#previewNotes', '#previewOrigin', '#previewRecipe'],
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.06, ease: 'power2.out', delay: 0.15 }
+      );
+    }
+
+    function closeProductPreview() {
+      gsap.to(previewModal, {
+        clipPath: 'inset(10% 10% 10% 10%)',
+        opacity: 0,
+        scale: 0.97,
+        duration: 0.45,
+        ease: 'power3.in',
+        onComplete: () => {
+          previewModal.classList.add('hidden');
+          gridContainer.classList.remove('grid-preview-active');
+          productCards.forEach(c => c.classList.remove('active-preview-card'));
+          // Resume smooth scrolling
+          lenis.start();
+        }
+      });
+    }
+
+    // Attach click events to grid cards
+    productCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        openProductPreview(card);
+      });
+    });
+
+    closePreviewBtn.addEventListener('click', closeProductPreview);
+
+    nextProductBtn.addEventListener('click', () => {
+      const nextIndex = (currentProductIndex + 1) % productCards.length;
+      openProductPreview(productCards[nextIndex]);
+    });
+
+    // Close preview on Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !previewModal.classList.contains('hidden')) {
+        closeProductPreview();
+      }
+    });
+  </script>
+
+</body>
+</html>
